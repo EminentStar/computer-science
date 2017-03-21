@@ -1,0 +1,3 @@
+# datastructure
+
+* Just for practice
