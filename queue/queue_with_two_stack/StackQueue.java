@@ -1,57 +1,40 @@
+/**
+ * Created by junkyu on 2017. 3. 26..
+ */
 public class StackQueue<T> {
-    private Stack<T> stack1;
-    private Stack<T> stack2;
-    private boolean stackNum;
+    private Stack<T> oldStack;
+    private Stack<T> newStack;
 
     public StackQueue(){
-        this.stackNum = true;
-        this.stack1 = new Stack<T>();
-        this.stack2 = new Stack<T>();
+        this.oldStack = new Stack<T>();
+        this.newStack = new Stack<T>();
     }
 
     public StackQueue(T value){
-        this.stackNum = true;
-        this.stack1 = new Stack<T>();
-        this.stack2 = new Stack<T>();
+        this.oldStack = new Stack<T>();
+        this.newStack = new Stack<T>();
 
-        this.stack1.push(value);
+        this.oldStack.push(value);
     }
 
-    public void push(T value){
-        if(this.stackNum){
-            this.stack1.push(value);
-        }else{
-            this.stack2.push(value);
-        }
+    public void insert(T value){
+        this.oldStack.push(value);
     }
 
-    public Object pop(){
-        if(this.stackNum){
-            return this.stack1.pop();
-        }else{
-            return this.stack2.pop();
-        }
+    public Object remove(){
+        this.shiftToNew();
+        return this.newStack.pop();
     }
 
-    public void stackToQueue(){
-        Stack from = null;
-        Stack to = null;
-
-        if(this.stackNum){
-            from = this.stack1;
-            to = this.stack2;
-        }else{
-            from = this.stack2;
-            to = this.stack1;
+    public void shiftToNew(){
+        if(this.newStack.isEmpty()){
+            Object obj = this.oldStack.pop();
+            while(obj != null){
+                this.newStack.push((T)obj);
+                obj = this.oldStack.pop();
+            }
         }
-
-        Object obj = from.pop();
-        while(obj != null){
-            to.push(obj);
-            obj = from.pop();
-        }
-
-        this.stackNum = !this.stackNum;
     }
 
 }
+

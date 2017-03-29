@@ -3,9 +3,6 @@ package com.company;
 /**
  * Created by junkyu on 2017. 3. 23..
  */
-/*
- * Node is the Node in single linked list
- */
 public class Stack<T> {
     Node<T> top;
 
@@ -41,5 +38,8 @@ public class Stack<T> {
         }
     }
 
+    boolean isEmpty(){
+        return (this.top == null)?true:false;
+    }
 }
 
