@@ -1,5 +1,5 @@
 /**
- * Created by junkyu on 2017. 3. 26..
+ * Created by junkyu on 2017. 3. 26...
  */
 public class StackQueue<T> {
     private Stack<T> oldStack;
