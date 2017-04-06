@@ -1,9 +1,30 @@
 package com.company;
 
 /**
- * Created by junkyu on 2017. 4. 1..
+ * Created by junkyu on 2017. 4. 7..
  */
 public class Sort {
+    public static void quickSort(int[] a,int p,int r){
+        // Unoptimized quick sort
+        if(p < r){
+            int q = partition(a, p, r);
+            quickSort(a, p, q-1);
+            quickSort(a, q+1, r);
+        }
+    }
+    public static int partition(int[] a, int p, int r){
+        int x = a[r]; // x = r로 잘못 입력
+        int i = p - 1;
+        for(int j = p; j < r; j++){ // r-1이 아니라 r전까지 가야하는거지
+            if(a[j] <= x){
+                i++;
+                swap(a, i, j);
+            }
+        }
+        swap(a, i+1, r);
+
+        return i+1;
+    }
     public static void bubbleSort(int[] arr){
         /*
         * 첫 원소부터 순차적으로 진행하며 현재 원소가 그 다음 원소의 값보다 크면
