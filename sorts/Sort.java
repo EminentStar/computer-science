@@ -1,4 +1,4 @@
-package com.company;
+import java.util.Random;
 
 /**
  * Created by junkyu on 2017. 4. 7..
@@ -12,6 +12,17 @@ public class Sort {
             quickSort(a, q+1, r);
         }
     }
+
+    public static void randomizedQuickSort(int[] a, int p, int r){
+        // Randomized quick sort
+        if(p < r){
+            int q = randomizedPartition(a, p, r);
+            randomizedQuickSort(a, p, q-1);
+            randomizedQuickSort(a, q+1, r);
+        }
+
+    }
+
     public static int partition(int[] a, int p, int r){
         int x = a[r]; // x = r로 잘못 입력
         int i = p - 1;
@@ -25,6 +36,15 @@ public class Sort {
 
         return i+1;
     }
+
+    public static int randomizedPartition(int[] a, int p, int r){
+        //Wrong! 범위구간을 잡았어야했는데, 0부터 마지막 제한까지로 해버렸네
+        //int i = new Random().nextInt(r + 1);
+        int i = new Random().nextInt(r + 1 - p) + p;
+        swap(a, i, r);
+        return partition(a, p, r);
+    }
+
     public static void bubbleSort(int[] arr){
         /*
         * 첫 원소부터 순차적으로 진행하며 현재 원소가 그 다음 원소의 값보다 크면
