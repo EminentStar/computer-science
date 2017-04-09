@@ -1,3 +1,5 @@
+package com.company;
+
 import java.util.Random;
 
 /**
@@ -23,6 +25,14 @@ public class Sort {
 
     }
 
+    public static void hoarePartitionQuickSort(int[] a, int p, int r){
+        if(p < r){
+            int q = hoarePartition(a, p, r);
+            hoarePartitionQuickSort(a, p, q);
+            hoarePartitionQuickSort(a, q+1, r);
+        }
+    }
+
     public static int partition(int[] a, int p, int r){
         int x = a[r]; // x = r로 잘못 입력
         int i = p - 1;
@@ -43,6 +53,27 @@ public class Sort {
         int i = new Random().nextInt(r + 1 - p) + p;
         swap(a, i, r);
         return partition(a, p, r);
+    }
+
+    public static int hoarePartition(int[] a, int p, int r){
+        int x = a[p];
+        int i = p;
+        int j = r;
+        while(true){
+            while(a[j] > x){
+                System.out.println(j);
+                j--;
+            }
+            while(a[i] < x){
+                i++;
+            }
+
+            if(i < j){
+                swap(a, i, j);
+            }else{
+                return j;
+            }
+        }
     }
 
     public static void bubbleSort(int[] arr){
