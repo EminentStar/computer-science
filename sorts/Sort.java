@@ -1,9 +1,120 @@
 package com.company;
 
+import java.util.Random;
+
 /**
- * Created by junkyu on 2017. 4. 1..
+ * Created by junkyu on 2017. 4. 7..
  */
 public class Sort {
+    private static final int MAX = 2100000000;
+    public static void mergeSort(int[] a, int p, int r){
+        if(p < r){
+            int q = (p + r)/2;
+            mergeSort(a, p, q);
+            mergeSort(a, q+1, r);
+            merge(a, p, q, r);
+
+        }
+    }
+
+    public static void merge(int[] a, int p, int q, int r){
+        int n1 = q - p + 1;
+        int n2 = r - q;
+        int[] a1 = new int[n1+1];
+        int[] a2 = new int[n2+1];
+        a1[n1] = a2[n2] = MAX;
+
+        for(int i = 0; i < n1; i++){
+            a1[i] = a[p+i];
+        }
+
+        for(int i = 0; i < n2; i++){
+            a2[i] = a[q + i + 1];
+        }
+
+        int i = 0, j = 0;
+
+        // k< r+ 1을 i < r+1로 오타..
+        // 또 k는 0부터가 아님. 본 배열의 인덱스이므로 p부터 시작해야함
+        for(int k = p; k < r + 1 ; k++){
+            if(a1[i] <= a2[j]){
+                a[k] = a1[i++];
+            }else{
+                a[k] = a2[j++];
+            }
+        }
+    }
+
+    public static void quickSort(int[] a,int p,int r){
+        // Unoptimized quick sort
+        if(p < r){
+            int q = partition(a, p, r);
+            quickSort(a, p, q-1);
+            quickSort(a, q+1, r);
+        }
+    }
+
+    public static void randomizedQuickSort(int[] a, int p, int r){
+        // Randomized quick sort
+        if(p < r){
+            int q = randomizedPartition(a, p, r);
+            randomizedQuickSort(a, p, q-1);
+            randomizedQuickSort(a, q+1, r);
+        }
+
+    }
+
+    public static void hoarePartitionQuickSort(int[] a, int p, int r){
+        if(p < r){
+            int q = hoarePartition(a, p, r);
+            hoarePartitionQuickSort(a, p, q);
+            hoarePartitionQuickSort(a, q+1, r);
+        }
+    }
+
+    public static int partition(int[] a, int p, int r){
+        int x = a[r]; // x = r로 잘못 입력
+        int i = p - 1;
+        for(int j = p; j < r; j++){ // r-1이 아니라 r전까지 가야하는거지
+            if(a[j] <= x){
+                i++;
+                swap(a, i, j);
+            }
+        }
+        swap(a, i+1, r);
+
+        return i+1;
+    }
+
+    public static int randomizedPartition(int[] a, int p, int r){
+        //Wrong! 범위구간을 잡았어야했는데, 0부터 마지막 제한까지로 해버렸네
+        //int i = new Random().nextInt(r + 1);
+        int i = new Random().nextInt(r + 1 - p) + p;
+        swap(a, i, r);
+        return partition(a, p, r);
+    }
+
+    public static int hoarePartition(int[] a, int p, int r){
+        int x = a[p];
+        int i = p;
+        int j = r;
+        while(true){
+            while(a[j] > x){
+                System.out.println(j);
+                j--;
+            }
+            while(a[i] < x){
+                i++;
+            }
+
+            if(i < j){
+                swap(a, i, j);
+            }else{
+                return j;
+            }
+        }
+    }
+
     public static void bubbleSort(int[] arr){
         /*
         * 첫 원소부터 순차적으로 진행하며 현재 원소가 그 다음 원소의 값보다 크면
