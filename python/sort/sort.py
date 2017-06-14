@@ -1,11 +1,37 @@
-from random import randrange
+from random import randint
 
 
 class Sort():
     __MAX__ = 2100000000
+   
+    """
+        * heapsort
+        * buildmaxheap
+        * max_heapify
+    """
 
     @classmethod
-    def merge_sort(cls, a, p, r):
+    def build_maxheap(cls, a, len):
+        while i <= len/2:
+            cls.max_heapify(a, len)
+
+    @classmethod
+    def max_heapify(cls, a, len):
+        i = 1
+        while i < len:
+            biggest = i
+
+            if a[i] < a[2*i]:
+                biggest = 2*i
+            if a[biggest] < a[2*i + 1]:
+                biggest = 2*i + 1
+            # swap
+            a[i], a[biggest] = a[biggest], a[i]
+
+            i = biggest
+
+    @classmethod
+    def merge_sort(cls, a, left, right):
         """ 
         정렬되지 않는 리스트를 반으로 두개의 서브 리스트로 분할하고 
         각 서브 리스트의 크기가 1이 될 때까지 재귀로 분할 정렬을 한 다음
@@ -22,48 +48,49 @@ class Sort():
           - In place sort
         * Stable
         """
-        if p < r: 
-            q = int((p + r)/2)
-            cls.merge_sort(a, p, q)
-            cls.merge_sort(a, q+1, r)
-            cls.merge(a, p, q, r)
+        if left < right:
+            mid = (left + right) // 2
+            cls.merge_sort(a, left, mid)
+            cls.merge_sort(a, mid + 1, right)
+            cls.merge(a, left, mid, right)
+
 
     @classmethod
-    def merge(cls, a, p, q, r):
-        # q를 기준으로 left, right 리스트를 만든다.
-        left_len = q - p + 1
-        right_len = r - q
+    def merge(cls, a, left, mid, right):
+        # mid를 기준으로 left, right 리스트를 만든다.
+        left_size = mid - left + 1
+        right_size = right - mid
 
-        left = [0] * (left_len + 1)
-        right = [0] * (right_len + 1)
+        left_part = [0] * (left_size + 1)
+        right_part = [0] * (right_size + 1)
         
         # 각 리스트의 마지막 인덱스에 경계값을 넣어준다.
-        left[left_len] = right[right_len] = cls.__MAX__
+        left_part[left_size] = cls.__MAX__
+        right_part[right_size] = cls.__MAX__
 
+        
+        # left_part와 right_part에 리스트의 부분값을 초기화한다.
+        for a_idx, left_idx in zip(range(left, mid+1), range(len(left_part))):
+            left_part[left_idx] = a[a_idx]
+        for a_idx, right_idx in zip(range(mid+1, right + 1), range(len(right_part))):
+            right_part[right_idx] = a[a_idx]
 
-        # left와 right 리스트에 리스트의 부분값을 초기화한다.
-        for i in range(left_len):
-            left[i] = a[p+i]
-        
-        for i in range(right_len):
-            right[i] = a[q + i + 1]
-        
+        left_idx = right_idx = 0
+
         """
-            기존 리스트 a를 p 부터 r까지 돌면서 
-            left, right중 작은 것을 채워나가는 식으로 한다.
+            기존 리스트 a를 left 부터 right까지 돌면서 
+            left_part, right_part중 작은 것을 채워나가는 식으로 한다.
         """
-        i = 0 # for left list
-        j = 0 # for right list
-        for k in range(p, r + 1):
-            if left[i] <= right[j]:
-                a[k] = left[i]
-                i += 1
+        for i in range(left, right+1):
+            if left_part[left_idx] > right_part[right_idx]:
+                a[i] = right_part[right_idx]
+                right_idx += 1
             else:
-                a[k] = right[j]
-                j += 1
+                a[i] = left_part[left_idx]
+                left_idx += 1
 
     @classmethod
-    def quick_sort(cls, a, p, r):
+    def quick_sort(cls, a, left, right):
         """
         리스트에서 피벗을 고르고 피벗의 왼쪽엔 그보다 작은 원소가,
         오른쪽에는 큰 원소가 오도록 한 후에 피벗을 제외하고 두 부분 리스트로 분할한다.
@@ -79,10 +106,10 @@ class Sort():
           - O(nlogn) for sorting
         * Unstable
         """
-        if p < r:
-            q = cls.partition(a, p, r)
-            cls.quick_sort(a, p, q-1)
-            cls.quick_sort(a, q+1, r)
+        if left < right:
+            pivot = cls.partition(a, left, right)
+            cls.quick_sort(a, left, pivot-1)
+            cls.quick_sort(a, pivot+1, right)
 
     @classmethod
     def quick_sort_with_hoare_partition(cls, a, p, r):
@@ -109,25 +136,22 @@ class Sort():
                 return j # 왜 i가 아니라 j를 반환하지?
 
     @classmethod
-    def partition(cls, a, p, r):
-        rand_idx = randrange(r - p + 1) + p
-        cls.swap(a, r, rand_idx)
-        a_len = r - p + 1
-
-        x = a[r]
-        left = p - 1
-        right = p
-
-        while j < r:
-            if a[j] <= x:
-                i += 1
-                cls.swap(a, i, j)
-
-            j += 1
-
-        cls.swap(a, i+1, r)
+    def partition(cls, a, left, right):
+        rand_idx = randint(left, right)
+        cls.swap(a, rand_idx, right)
         
-        return i+1
+        pivot_value = a[right]
+        partition_idx = left - 1
+        
+        for j in range(left, right):
+            if pivot_value > a[j]:
+                partition_idx += 1
+                cls.swap(a, partition_idx, j)
+        
+        partition_idx += 1
+        cls.swap(a, partition_idx, right)
+        
+        return partition_idx
 
     @classmethod
     def bubble_sort(cls, a):
