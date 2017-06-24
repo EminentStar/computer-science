@@ -1,4 +1,4 @@
-package com.company;
+ckage com.company;
 
 import java.util.Random;
 
@@ -7,6 +7,58 @@ import java.util.Random;
  */
 public class Sort {
     private static final int MAX = 2100000000;
+
+    public static int[] countingSort(int[] a, int maxNum){
+        int[] c = new int[maxNum + 1];
+        int[] b = new int[a.length];
+
+        //1. 일단 배열 c에 a의 배월 원소를 다 count해서 원소별 count를 c의 인덱스(원소)에 넣는다
+        for(int i = 0; i < a.length; i++){
+            c[a[i]]++;
+        }
+
+        //2. 배열 c의 각 인덱스에 대해 해당 인덱스보다 작은 원소의 개수를 표현하도록 한다.(누적)
+        for(int i = 1 ; i < c.length; i++){
+            c[i] += c[i-1];
+        }
+
+        //3. a의 마지막 원소부터 시작해서 c를 참조하여 정렬된 배열 b를 만들어나간다.
+        for(int i = a.length - 1; i >= 0; i--){
+            int num = a[i];
+            b[c[num] - 1] = num; // 놓친 것. b[c[num]] = num이라고 함. 해당 원소보다 작은 원소의 개수를 표현하니, 개수로 따지면 인덱스가 하나 증가함. 마지막에 outofindex에러가 뜸
+            c[num]--;
+        }
+
+        return b;
+    }
+
+
+    public static void countingSortWithoutReturn(int[] a, int maxNum){
+        int[] c = new int[maxNum + 1];
+        int[] b = new int[a.length];
+
+        //1. 일단 배열 c에 a의 배월 원소를 다 count해서 원소별 count를 c의 인덱스(원소)에 넣는다
+        for(int i = 0; i < a.length; i++){
+            c[a[i]]++;
+        }
+
+        //2. 배열 c의 각 인덱스에 대해 해당 인덱스보다 작은 원소의 개수를 표현하도록 한다.(누적)
+        for(int i = 1 ; i < c.length; i++){
+            c[i] += c[i-1];
+        }
+
+        //3. a의 마지막 원소부터 시작해서 c를 참조하여 정렬된 배열 b를 만들어나간다.
+        for(int i = a.length - 1; i >= 0; i--){
+            int num = a[i];
+            b[c[num] - 1] = num; // 놓친 것. b[c[num]] = num이라고 함. 해당 원소보다 작은 원소의 개수를 표현하니, 개수로 따지면 인덱스가 하나 증가함. 마지막에 outofindex에러가 뜸
+            c[num]--;
+        }
+
+        for(int i = 0; i < a.length ; i++){
+            a[i] = b[i];
+        }
+    }
+
     public static void mergeSort(int[] a, int p, int r){
         if(p < r){
             int q = (p + r)/2;
@@ -205,5 +257,16 @@ public class Sort {
         arr[idx2] = tmp;
     }
 
+    public static int max(int[] a){
+        int max = -2100000000;
+
+        for(int e:a){
+            if(e > max){
+                max = e;
+            }
+        }
+
+        return max;
+    }
 }
 
