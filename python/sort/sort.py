@@ -204,6 +204,20 @@ class Sort():
             cls.swap(a, i, min_idx)
 
     @classmethod
+    def selection_sort_recursive(cls, a, start_idx):
+        if start_idx >= len(a) - 1:
+            return
+        
+        min_idx = start_idx
+
+        for i in range(start_idx + 1, len(a)):
+            if a[i] < a[min_idx]:
+                min_idx = i
+        
+        cls.swap(a, start_idx, min_idx)
+        cls.selection_sort_recursive(a, start_idx+1)
+
+    @classmethod
     def insertion_sort(cls, a):
         """
         리스트의 모든 요소를 앞에서부터 차례대로 이미 정렬된
