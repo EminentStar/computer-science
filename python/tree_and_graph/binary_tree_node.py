@@ -43,3 +43,50 @@ class Node():
             return (max(leaf_depths) - min(leaf_depths)) <= 1
         else:
             return None
+
+    @classmethod
+    def get_height(cls, root):
+        if root is None: return 0
+        
+        return max(cls.get_height(root.left_child), cls.get_height(root.right_child)) + 1
+
+    @classmethod
+    def is_balanced(cls, root):
+        if root is None: return True
+
+        left_height = cls.get_height(root.left_child)
+        right_height = cls.get_height(root.right_child)
+
+        diff_height = abs(left_height - right_height)
+
+        if diff_height > 1:
+            return False
+        else:
+            return cls.is_balanced(root.left_child) and cls.is_balanced(root.right_child)
+
+     
+    @classmethod
+    def check_height(cls, root):
+        if root is None: return 0
+
+        left_height = cls.check_height(root.left_child)
+        if left_height == -1:
+            return -1
+
+        right_height = cls.check_height(root.right_child)
+        if right_height == -1:
+            return -1
+     
+        diff_height = abs(left_height - right_height)
+
+        if diff_height > 1:
+            return -1
+        else:
+            return max(left_height, right_height) + 1
+
+    @classmethod
+    def is_balanced_improved(cls, root):
+        if cls.check_height(root) == -1:
+            return False
+        else:
+            return True

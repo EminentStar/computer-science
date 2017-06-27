@@ -22,7 +22,10 @@ def main():
       D   E   F
     """
     leaf_depths = []
-    print(Node.is_balanced_tree(root, 0, leaf_depths)) # True
+    print("Balanced: %r" % Node.is_balanced_tree(root, 0, leaf_depths)) # True
+    print("Height: %r" % Node.get_height(root)) # 3
+    print("Balanced(improved 1st): %r" % Node.is_balanced(root)) # True
+    print("Balanced(improved 2nd): %r" % Node.is_balanced_improved(root)) # True
 
     root = Node('A') 
     b = Node('B')
@@ -46,7 +49,10 @@ def main():
     F
     """
     leaf_depths = []
-    print(Node.is_balanced_tree(root, 0, leaf_depths)) # False
+    print("Balanced: %r" % Node.is_balanced_tree(root, 0, leaf_depths)) # False
+    print("Height: %r" % Node.get_height(root)) # 4
+    print("Balanced(improved 1st): %r" % Node.is_balanced(root)) # False
+    print("Balanced(improved 2nd): %r" % Node.is_balanced_improved(root)) # False
 
 if __name__ == "__main__":
     main()
