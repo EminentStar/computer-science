@@ -175,6 +175,18 @@ class Sort():
             for j in range(l-1-i):
                 if a[j] > a[j+1]:
                     cls.swap(a, j, j+1)
+    
+    @classmethod
+    def bubble_sort_recursive(cls, a, start_idx):
+        length = len(a)
+        if start_idx >= length-1:
+            return
+
+        for i in range(start_idx+1, length):
+            if a[i] > a[i-1]:
+                cls.swap(a, i, i-1)
+        
+        cls.bubble_sort_recursive(a, start_idx+1)
 
     @classmethod
     def selection_sort(cls, a):
