@@ -46,8 +46,9 @@ class Node():
     def track_list(self):
         curr = self
 
+        print("HEAD", end=' -> ')
         while curr != None:
-            print("%r, " % curr.value, end='')
+            print("%r" % curr.value, end=' -> ')
             curr = curr.next
 
-        print()
+        print("None")
